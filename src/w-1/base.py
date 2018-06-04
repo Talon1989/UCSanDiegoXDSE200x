@@ -46,11 +46,12 @@ def plottingStuff():
     pylab.show()
 
 
-def test(position=0):
-    print(position)
-    if position == 10:
-        return
-    test(position+1)
+def reverseWord(word, position=0, finalword=''):
+    if position < len(word)-1:
+        finalword = reverseWord(word, position+1, finalword)
+    finalword += word[position]
+    return finalword
+
 
 # d = [2,2,5,6,4,5,2,3,2,5,4,2,3,3,3,3]
 # print(numpy.std(d))
@@ -62,4 +63,4 @@ def test(position=0):
 
 a = (lambda x: x*2)
 print(a(4))
-print()
+print(reverseWord('we are the world'))
