@@ -29,19 +29,19 @@ def plottingStuff():
     quadratic = []
     cubic = []
     exponential = []
-    tetracted = []
+    tetrated = []
     for i in range(0, 20):
         linear.append(i)
         quadratic.append(i**2)
         cubic.append(i**3)
         exponential.append(2**i)
-        tetracted.append((2**i)*i)
+        tetrated.append((2**i)*i)
     pylab.plot(linear, label='linear')
     pylab.plot(quadratic, label='quadratic')
     pylab.plot(cubic, label='cubic')
     pylab.plot(exponential, label='exponential')
-    pylab.plot(tetracted, label='tetracted')
-    pylab.ylim(0,50)
+    pylab.plot(tetrated, label='tetracted')
+    pylab.ylim(0, 50)
     pylab.legend()
     pylab.show()
 
@@ -58,9 +58,10 @@ def reverseWord(word, position=0, finalword=''):
 # d = numpy.array(d)
 # print(meanStd(d))
 
-# plottingStuff()
+plottingStuff()
 
 
-a = (lambda x: x*2)
-print(a(4))
-print(reverseWord('we are the world'))
+# a = (lambda x: x*2)
+# print(a(4))
+# print(reverseWord('we are the world'))
+
