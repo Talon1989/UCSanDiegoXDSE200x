@@ -11,3 +11,13 @@ print('Accessing element [0,2]:', rank2[0,2])
 
 zeroes = np.zeros((2,2)) # 2 by 2 array of 0 values
 print('zeroes:', zeroes)
+
+
+print(np.array([[0,1,2], [10,11,12]]))
+
+
+l = [1,2,3,4,5,6]
+print([num for num in l if  num%2==0])
+l2 = l[:]
+l2.pop()
+print(l)
