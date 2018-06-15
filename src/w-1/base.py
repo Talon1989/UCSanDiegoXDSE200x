@@ -58,10 +58,10 @@ def reverseWord(word, position=0, finalword=''):
 # d = numpy.array(d)
 # print(meanStd(d))
 
-plottingStuff()
+# plottingStuff()
 
 
-# a = (lambda x: x*2)
-# print(a(4))
-# print(reverseWord('we are the world'))
+a = (lambda x: x*2)
+print(a(4))
+print(reverseWord('we are the world'))
 
