@@ -21,3 +21,11 @@ print([num for num in l if  num%2==0])
 l2 = l[:]
 l2.pop()
 print(l)
+print()
+print()
+
+row = [1,2,3,4]
+col = [0,1,2,0]
+for a,b in zip(row, col):
+    print(a, b)
+
