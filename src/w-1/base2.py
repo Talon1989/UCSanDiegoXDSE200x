@@ -29,3 +29,17 @@ col = [0,1,2,0]
 for a,b in zip(row, col):
     print(a, b)
 
+
+print()
+print('BOOLEAN INDEXING')
+
+
+an_array = np.array([[11.,12.], [21., 22.], [31., 32.]])
+print(an_array.dtype)
+even = an_array % 2 == 0
+print(even)
+print(an_array[even])
+
+
+print(np.random.randn(2,5))
+
