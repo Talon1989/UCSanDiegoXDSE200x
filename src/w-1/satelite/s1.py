@@ -36,20 +36,45 @@ def makeWhiteDiagonal(photo):
     plt.show()
 
 
-photo_data = imageio.imread('img/sd-3layers.jpg')
-print("Shape of photo_data:", photo_data.shape)
-lowValueFilter = photo_data < 200  # returns True for each value of rbg of each pixel if it's less than 200
-print("Shape of low_value_filter:", lowValueFilter.shape)
-print(photo_data[1000,1000])
-# plt.figure(figsize=(10,10))
-# plt.imshow(photo_data)
-# plt.show()
-# photo_data[lowValueFilter] = 0  # set the low value pixel to black
-# plt.figure(figsize=(10,10))
-# plt.imshow(photo_data)
-# plt.show()
-makeWhiteDiagonal(photo_data)
+def filterIntesity(photo):
+    print("Shape of photo_data:", photo.shape)
+    lowValueFilter = photo < 200  # returns True for each value of rbg of each pixel if it's less than 200
+    print("Shape of low_value_filter:", lowValueFilter.shape)
+    print(photo[1000,1000])
+    plt.figure(figsize=(10,10))
+    plt.imshow(photo)
+    plt.show()
+    photo[lowValueFilter] = 0  # set the low value pixel to black
+    plt.figure(figsize=(10,10))
+    plt.imshow(photo)
+    plt.show()
 
+
+def maskingImage(photo):
+    assert isinstance(photo, imageio.core.util.Image)
+    rows, cols, layers = photo.shape
+    X, Y = np.ogrid[:rows, :cols]
+    # print("X.shape = ", X.shape, " and Y.shape = ", Y.shape)
+    # print('X=',X)
+    # print('Y=',Y)
+    centerRow, centerCol = rows / 2, cols / 2
+    # print('centerRow=', centerRow)
+    # print('centerCol=', centerCol)
+    dist_from_center = (X - centerRow) ** 2 + (Y - centerCol) ** 2
+    # print('dist_from_center=', dist_from_center)
+    radius = (rows / 2) ** 2
+    # print("Radius = ", radius)
+    circular_mask = (dist_from_center > radius)
+    # print(circular_mask)
+    # print(circular_mask[1500:1700, 2000:2200])
+    photo[circular_mask] = 0
+    plt.figure(figsize=(15,15))
+    plt.imshow(photo)
+    plt.show()
+
+
+photo_data = imageio.imread('img/sd-3layers.jpg')
+maskingImage(photo_data)
 
 
 
