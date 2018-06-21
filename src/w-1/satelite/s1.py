@@ -107,8 +107,9 @@ def rgbMask(photo):
 
 
 
-photo_data = imageio.imread('img/sd-3layers.jpg')
-rgbMask(photo_data)
+# photo_data = imageio.imread('img/sd-3layers.jpg')
+# rgbMask(photo_data)
+broadcastGrid()
 
 
 

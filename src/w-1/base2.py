@@ -43,3 +43,5 @@ print(an_array[even])
 
 print(np.random.randn(2,5))
 
+expanded_array = np.repeat(np.expand_dims(np.arange(0,6), axis=0), repeats=5, axis=0)
+print(expanded_array)

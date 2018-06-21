@@ -33,6 +33,7 @@ class ImageElaborator:
         # print(Y_grid.shape)
         # print(X_grid)
         distance_from_radius = (X_grid - center_row) ** 2 + (Y_grid - center_col) ** 2
+        # print(distance_from_radius)
         photo[distance_from_radius > radius] = 0
         plt.figure(figsize=(15,15))
         plt.imshow(photo)
@@ -51,11 +52,21 @@ class ImageElaborator:
         plt.imshow(photo)
         plt.show()
 
+    def paintWhite(self):
+        photo = self.photo_data[:]
+        rows, cols, layers = photo.shape
+        rows //= 2
+        cols //= 2
+        photo[rows-100:rows+100, cols-100:cols+100] = 255
+        plt.figure(figsize=(15,15))
+        plt.imshow(photo)
+        plt.show()
+
 
 
 
 
 elaboration = ImageElaborator(imageio.imread('mathias-zamecki.jpg'))
-elaboration.circle()
-elaboration.diagonal_line()
+elaboration.paintWhite()
+# elaboration.diagonal_line()
 
