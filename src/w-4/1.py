@@ -21,7 +21,7 @@ import numpy as np
 
 
 
-# PANDA SERIES
+# PANDAS SERIES
 
 ser1 = pd.Series(data=[1,2,3], index=['tom', 'bob', 'luc'])
 print(ser1)
@@ -35,7 +35,7 @@ print(ser1*2)
 print()
 
 
-# PANDA DATAFRAME
+# PANDAS DATAFRAME
 
 d = {'one': pd.Series([100.,200.,300.]
                       ,['apple','ball','clock'])
@@ -56,5 +56,10 @@ print(df)
 print('greater than 2 in column balls: \n', df['balls']>2)
 suitcases = df.pop('suitcases')
 print('printing suitcases Series:', suitcases)  # suitcases is a series when removed from a dataframe
+df2 = df[['balls', 'vases']][:1]  # new df, copy of first value of column balls and vases
+print(df2)
+print(df.head(1))
+
+
 
 
