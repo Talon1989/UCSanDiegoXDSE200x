@@ -43,5 +43,14 @@ print(an_array[even])
 
 print(np.random.randn(2,5))
 
-expanded_array = np.repeat(np.expand_dims(np.arange(0,6), axis=0), repeats=5, axis=0)
-print(expanded_array)
+
+def multiDimNpArrays():
+    # expanded_array = np.repeat(np.expand_dims(np.arange(0, 6), axis=0), repeats=5, axis=0)
+    expanded_array = np.array([np.arange(6)] * 5)
+    print(expanded_array)
+
+
+print(multiDimNpArrays())
+
+
+
