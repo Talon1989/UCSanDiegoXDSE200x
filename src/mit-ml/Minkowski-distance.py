@@ -1,9 +1,22 @@
 import numpy as np
 import pylab
+import random
 
 rattlesnake = np.array([1,1,1,1,0])
 boaConstrictor = np.array([0,1,0,1,0])
 fartFrog = np.array([1,0,1,0,4])
+
+
+def plotSamples(samples, marker):
+    xVals, yVals = [], []
+    for s in samples:
+        x = s.getFeatures()[0]
+        y = s.getFeatures()[1]
+        pylab.annotate(s.getName(), xy=(x, y), xytext=(x+0.13, y-0.07), fontsize='x-large')
+        xVals.append(x)
+        yVals.append(y)
+    pylab.plot(xVals, yVals, marker)
+    pylab.show()
 
 
 def computeDistance(data1, data2, p=2):
@@ -99,7 +112,8 @@ class Example:
         return self.name
 
     def distance(self, other):
-        return computeDistance(self.features, other.getFeatures(), 2)
+        return computeDistance(
+            np.array(self.features), np.array(other.getFeatures()), 2)
 
     def __str__(self):
         return self.name + ':' + str(self.features) + ':' + str(self.label)
@@ -161,19 +175,104 @@ class Cluster:
             result = result + e + ', '
         return result[:-2]
 
-# print('data distance:', computeDistance(fartFrog, boaConstrictor))
 
-# rattlesnake = Animal('rattlesnake', [1,1,1,1,0])
-# boa = Animal('boa\nconstrictor', [0,1,0,1,0])
-# dartFrog = Animal('dart frog', [1,0,1,0,4])
-#
-# print(Animal.distance(boa, rattlesnake))
+def kMeans(examples, exampleType, k, verbose):
+    """Assumes examples is a list of examples of type exampleType,
+    k is a positive int, verbose is a Boolean
+    Returns a list containing k clusters. If verbose is
+    True it prints result of each iteration of k-means"""
+
+    # get k randomly chosen initial centroids
+    initialCentroids = random.sample(examples, k)
+
+    # create a singleton cluster for each centroid
+    clusters = []
+    for e in initialCentroids:
+        clusters.append(Cluster([e], exampleType))
+
+    # iterate until centroids do not change
+    converged = False
+    counter = 0
+    while not converged:
+        counter += 1
+        newCluster = []
+        for _ in range(k):
+            newCluster.append([])
+        for e in examples:
+            smallestDistance = e.distance(clusters[0].getCentroid())
+            index = 0
+            for i in range(1, k):
+                distance = e.distance(clusters[i].getCentroid())
+                if distance < smallestDistance:
+                    smallestDistance = distance
+                    index = i
+            newCluster[index].append(e)
+
+        # update each cluster, check if a centroid has changed
+        converged = True
+        for i in range(len(clusters)):
+            if clusters[i].update(newCluster[i]) > 0.0:
+                converged = False
+            if verbose:
+                print('Iteration #' + str(counter))
+                for c in clusters:
+                    print(c)
+                print('\n')
+    return clusters
 
 
-my_animals = [Animal('rattlesnake', [1,1,1,1,0]), Animal('boa\nconstrictor', [0,1,0,1,0])
-              , Animal('dart frog', [1,0,1,0,1])]
-alligator = Animal('alligator', [1,1,0,1,1])
-my_animals.append(alligator)
-compareAnimals(my_animals)
+def dissimilarity(clusters):
+    totDist = 0.0
+    for c in clusters:
+        totDist += c.variance()
+    return totDist
+
+
+def tryKmeans(examples, exampleType, numClusters, numTrials, verbose=False):
+    """
+    Calls kmeans numTrials times and returns the result with the lowest dissimilarity
+    """
+    best = kMeans(examples, exampleType, numClusters, verbose)
+    minDissimilarity = dissimilarity(best)
+    for numTrials in range(1, numTrials):
+        clusters = kMeans(examples, exampleType, numClusters, verbose)
+        currDissimilarity = dissimilarity(clusters)
+        if currDissimilarity < minDissimilarity:
+            best = clusters
+            minDissimilarity = currDissimilarity
+    return best
+
+
+def genDistribution(xMean, xSD, yMean, ySD, n, namePrefix):
+    samples = []
+    for s in range(n):
+        x = random.gauss(xMean, xSD)
+        y = random.gauss(yMean, ySD)
+        samples.append(Example(namePrefix+str(s), [x, y]))
+    return samples
+
+
+def contrivedTest(numTrials, k, verbose=True):
+    random.seed(0)
+    xMean, xSD, yMean, ySD = 3, 1, 5, 1
+    n = 10
+    d1Samples = genDistribution(xMean, xSD, yMean, ySD, n, '1.')
+    plotSamples(d1Samples, 'b^')
+    d2Samples = genDistribution(xMean+3, xSD, yMean+1, ySD, n, '2.')
+    plotSamples(d2Samples, 'ro')
+    clusters = tryKmeans(d1Samples + d2Samples, Example, k, numTrials, verbose)
+    print('Final result.')
+    for c in clusters:
+        print('', c)
+
+
+contrivedTest(40,2, True)
+
+
+# my_animals = [Animal('rattlesnake', [1,1,1,1,0]), Animal('boa\nconstrictor', [0,1,0,1,0])
+#               , Animal('dart frog', [1,0,1,0,1])]
+# alligator = Animal('alligator', [1,1,0,1,1])
+# my_animals.append(alligator)
+# compareAnimals(my_animals)
 
 
