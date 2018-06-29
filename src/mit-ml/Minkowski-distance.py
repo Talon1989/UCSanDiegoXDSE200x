@@ -19,6 +19,26 @@ def plotSamples(samples, marker):
     pylab.show()
 
 
+def plot2Samples(samples1, samples2, marker1, marker2):
+    xVals, yVals = [], []
+    for s in samples1:
+        x = s.getFeatures()[0]
+        y = s.getFeatures()[1]
+        pylab.annotate(s.getName(), xy=(x, y), xytext=(x + 0.13, y - 0.07), fontsize='x-large')
+        xVals.append(x)
+        yVals.append(y)
+    pylab.plot(xVals, yVals, marker1)
+    xVals, yVals = [], []
+    for s in samples2:
+        x = s.getFeatures()[0]
+        y = s.getFeatures()[1]
+        pylab.annotate(s.getName(), xy=(x, y), xytext=(x + 0.13, y - 0.07), fontsize='x-large')
+        xVals.append(x)
+        yVals.append(y)
+    pylab.plot(xVals, yVals, marker2)
+    pylab.show()
+
+
 def computeDistance(data1, data2, p=2):
     """
     :param data1: np array
@@ -257,16 +277,17 @@ def contrivedTest(numTrials, k, verbose=True):
     xMean, xSD, yMean, ySD = 3, 1, 5, 1
     n = 10
     d1Samples = genDistribution(xMean, xSD, yMean, ySD, n, '1.')
-    plotSamples(d1Samples, 'b^')
+    # plotSamples(d1Samples, 'b^')
     d2Samples = genDistribution(xMean+3, xSD, yMean+1, ySD, n, '2.')
-    plotSamples(d2Samples, 'ro')
+    # plotSamples(d2Samples, 'ro')
+    plot2Samples(d1Samples, d2Samples, 'b^', 'ro')
     clusters = tryKmeans(d1Samples + d2Samples, Example, k, numTrials, verbose)
     print('Final result.')
     for c in clusters:
         print('', c)
 
 
-contrivedTest(40,2, True)
+contrivedTest(100, 2, True)
 
 
 # my_animals = [Animal('rattlesnake', [1,1,1,1,0]), Animal('boa\nconstrictor', [0,1,0,1,0])
