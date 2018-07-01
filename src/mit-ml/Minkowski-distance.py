@@ -39,6 +39,34 @@ def plot2Samples(samples1, samples2, marker1, marker2):
     pylab.show()
 
 
+def plot3Samples(samples1, samples2, samples3, marker1, marker2, marker3):
+    xVals, yVals = [], []
+    for s in samples1:
+        x = s.getFeatures()[0]
+        y = s.getFeatures()[1]
+        pylab.annotate(s.getName(), xy=(x, y), xytext=(x + 0.13, y - 0.07), fontsize='x-large')
+        xVals.append(x)
+        yVals.append(y)
+    pylab.plot(xVals, yVals, marker1)
+    xVals, yVals = [], []
+    for s in samples2:
+        x = s.getFeatures()[0]
+        y = s.getFeatures()[1]
+        pylab.annotate(s.getName(), xy=(x, y), xytext=(x + 0.13, y - 0.07), fontsize='x-large')
+        xVals.append(x)
+        yVals.append(y)
+    pylab.plot(xVals, yVals, marker2)
+    xVals, yVals = [], []
+    for s in samples3:
+        x = s.getFeatures()[0]
+        y = s.getFeatures()[1]
+        pylab.annotate(s.getName(), xy=(x, y), xytext=(x + 0.13, y - 0.07), fontsize='x-large')
+        xVals.append(x)
+        yVals.append(y)
+    pylab.plot(xVals, yVals, marker3)
+    pylab.show()
+
+
 def computeDistance(data1, data2, p=2):
     """
     :param data1: np array
@@ -133,7 +161,7 @@ class Example:
 
     def distance(self, other):
         return computeDistance(
-            np.array(self.features), np.array(other.getFeatures()), 2)
+            np.array(self.features), np.array(other.getFeatures()))
 
     def __str__(self):
         return self.name + ':' + str(self.features) + ':' + str(self.label)
@@ -215,9 +243,7 @@ def kMeans(examples, exampleType, k, verbose):
     counter = 0
     while not converged:
         counter += 1
-        newCluster = []
-        for _ in range(k):
-            newCluster.append([])
+        newCluster = [[] for _ in range(k)]
         for e in examples:
             smallestDistance = e.distance(clusters[0].getCentroid())
             index = 0
@@ -269,6 +295,7 @@ def genDistribution(xMean, xSD, yMean, ySD, n, namePrefix):
         x = random.gauss(xMean, xSD)
         y = random.gauss(yMean, ySD)
         samples.append(Example(namePrefix+str(s), [x, y]))
+    # print(samples)
     return samples
 
 
@@ -281,13 +308,14 @@ def contrivedTest(numTrials, k, verbose=True):
     d2Samples = genDistribution(xMean+3, xSD, yMean+1, ySD, n, '2.')
     # plotSamples(d2Samples, 'ro')
     plot2Samples(d1Samples, d2Samples, 'b^', 'ro')
+    # print(len(d1Samples + d2Samples))
     clusters = tryKmeans(d1Samples + d2Samples, Example, k, numTrials, verbose)
     print('Final result.')
     for c in clusters:
         print('', c)
 
 
-contrivedTest(100, 2, True)
+contrivedTest(20, 2, False)
 
 
 # my_animals = [Animal('rattlesnake', [1,1,1,1,0]), Animal('boa\nconstrictor', [0,1,0,1,0])
