@@ -79,9 +79,9 @@ class Cluster:
 
 
 def kMeans(examples, ExampleType, k):
-    initialClusters = random.sample(examples, k)
+    initialExamples = random.sample(examples, k)
     clusters = []
-    for e in initialClusters:
+    for e in initialExamples:
         clusters.append(Cluster([e], ExampleType))
     flag = False
     while not flag:
