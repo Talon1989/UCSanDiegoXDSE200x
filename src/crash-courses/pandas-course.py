@@ -86,5 +86,9 @@ def dataFrames3():  # multi index level dataframe
 
 
 
-dataFrames3()
-
+# dataFrames3()
+df = pd.DataFrame(np.random.randn(5, 4),
+                  index=['A', 'B', 'C', 'D', 'E'], columns=['W', 'X', 'Y', 'Z'])
+print( df )
+print( df.describe() )
+print( df.corr() )
